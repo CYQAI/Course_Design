@@ -81,12 +81,19 @@ int main(void)
     gd_eval_led_init(LED3);
     gd_eval_com_init(EVAL_COM);
     gd_eval_key_init(KEY_WAKEUP, KEY_MODE_GPIO);
+
+    /*初始化OLED*/
+    OLED_Init();
+	OLED_Clear(); 
     
+    OLED_ShowString(0,6,"ASCII:");  
+	OLED_ShowString(63,6,"CODE:");  
+
     /* print out the clock frequency of system, AHB, APB1 and APB2 */
     printf("\r\nCK_SYS is %d", rcu_clock_freq_get(CK_SYS));
     printf("\r\nCK_AHB is %d", rcu_clock_freq_get(CK_AHB));
     printf("\r\nCK_APB1 is %d", rcu_clock_freq_get(CK_APB1));
-    printf("\r\nCK_APB2 is %d", rcu_clock_freq_get(CK_APB2));
+//hfyug
 
     while (1){
         if(SET == gd_eval_key_state_get(KEY_WAKEUP)){

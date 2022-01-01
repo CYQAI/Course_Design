@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>GD32E230</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Firmware\CMSIS;..\..\Utilities;..\;..\..\Utilities\LCD_Commom;..\..\Firmware\GD32E23x_standard_peripheral\Include;..\..\Firmware\CMSIS\GD\GD32E23x\Include</IncludePath>
+              <IncludePath>..\..\Firmware\CMSIS;..\..\Utilities;..\;..\..\Utilities\LCD_Commom;..\..\Firmware\GD32E23x_standard_peripheral\Include;..\..\Firmware\CMSIS\GD\GD32E23x\Include;..\..\Hardware\OLED</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -397,6 +397,16 @@
               <FileName>systick.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\systick.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Hardware</GroupName>
+          <Files>
+            <File>
+              <FileName>oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Hardware\OLED\oled.c</FilePath>
             </File>
           </Files>
         </Group>

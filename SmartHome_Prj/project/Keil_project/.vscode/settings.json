@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "main.h": "c",
+        "gd32e23x.h": "c",
+        "oled.h": "c",
+        "gd32e230c_eval.h": "c"
+    }
+}

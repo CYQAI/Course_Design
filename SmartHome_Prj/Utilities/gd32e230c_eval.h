@@ -42,6 +42,8 @@ OF SUCH DAMAGE.
 #endif
 
 #include "gd32e23x.h"
+#include "oled.h"
+
 
 /* exported types */
 typedef enum 
