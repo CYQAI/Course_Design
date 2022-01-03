@@ -9,6 +9,7 @@
                 "c:\\Users\\CYQ\\Desktop\\SmartHome_Prj\\SmartHome_Prj\\Firmware\\GD32E23x_standard_peripheral\\Include",
                 "c:\\Users\\CYQ\\Desktop\\SmartHome_Prj\\SmartHome_Prj\\Firmware\\CMSIS\\GD\\GD32E23x\\Include",
                 "c:\\Users\\CYQ\\Desktop\\SmartHome_Prj\\SmartHome_Prj\\Hardware\\OLED",
+                "c:\\Users\\CYQ\\Desktop\\SmartHome_Prj\\SmartHome_Prj\\Hardware\\DHT11",
                 "C:\\MDK5_31\\ARM\\ARMCLANG\\include",
                 "C:\\MDK5_31\\ARM\\ARMCLANG\\include\\arm_linux",
                 "C:\\MDK5_31\\ARM\\ARMCLANG\\include\\arm_linux_compat",

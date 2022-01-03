@@ -42,22 +42,26 @@ OF SUCH DAMAGE.
 #endif
 
 #include "gd32e23x.h"
-#include "oled.h"
 
+/*外设驱动*/
+#include "oled.h"
+#include "dht11.h"
 
 /* exported types */
 typedef enum 
 {
-    LED1 = 0,
-    LED2 = 1,
-    LED3 = 2,
-    LED4 = 3
+    LED0 = 0,
+    LED1 = 1,
+    LED2 = 2,
 }led_typedef_enum;
 
 typedef enum 
 {
-    KEY_WAKEUP = 0,
-    KEY_TAMPER = 1,
+    KEY0 = 0,
+    KEY1 = 1,
+    KEY2 = 2,
+    KEY3 = 3,
+    HC_SR501 = 4,
 }key_typedef_enum;
 
 typedef enum 
@@ -68,44 +72,59 @@ typedef enum
 
 
 /* eval board low layer led */
-#define LEDn                             4U
+#define LEDn                             3U
 
-#define LED1_PIN                         GPIO_PIN_8
+#define LED0_PIN                         GPIO_PIN_6
+#define LED0_GPIO_PORT                   GPIOA
+#define LED0_GPIO_CLK                    RCU_GPIOA
+
+#define LED1_PIN                         GPIO_PIN_7
 #define LED1_GPIO_PORT                   GPIOA
 #define LED1_GPIO_CLK                    RCU_GPIOA
 
-#define LED2_PIN                         GPIO_PIN_11
-#define LED2_GPIO_PORT                   GPIOA
-#define LED2_GPIO_CLK                    RCU_GPIOA
-
-#define LED3_PIN                         GPIO_PIN_12
-#define LED3_GPIO_PORT                   GPIOA
-#define LED3_GPIO_CLK                    RCU_GPIOA
-
-#define LED4_PIN                         GPIO_PIN_15
-#define LED4_GPIO_PORT                   GPIOA
-#define LED4_GPIO_CLK                    RCU_GPIOA
+#define LED2_PIN                         GPIO_PIN_0
+#define LED2_GPIO_PORT                   GPIOB
+#define LED2_GPIO_CLK                    RCU_GPIOB
 
 /* eval board low layer button */  
-#define KEYn                             2U
+#define KEYn                             5U
 
-/* wakeup push-button */
-#define WAKEUP_KEY_PIN                   GPIO_PIN_0
-#define WAKEUP_KEY_GPIO_PORT             GPIOA
-#define WAKEUP_KEY_GPIO_CLK              RCU_GPIOA
-#define WAKEUP_KEY_EXTI_LINE             EXTI_0
-#define WAKEUP_KEY_EXTI_PORT_SOURCE      EXTI_SOURCE_GPIOA
-#define WAKEUP_KEY_EXTI_PIN_SOURCE       EXTI_SOURCE_PIN0
-#define WAKEUP_KEY_EXTI_IRQn             EXTI0_1_IRQn
+/* KEY0 push-button */
+#define KEY0_KEY_PIN                   GPIO_PIN_13
+#define KEY0_KEY_GPIO_PORT             GPIOB
+#define KEY0_KEY_GPIO_CLK              RCU_GPIOB
+#define KEY0_KEY_EXTI_LINE             EXTI_0
+#define KEY0_KEY_EXTI_PORT_SOURCE      EXTI_SOURCE_GPIOA
+#define KEY0_KEY_EXTI_PIN_SOURCE       EXTI_SOURCE_PIN0
+#define KEY0_KEY_EXTI_IRQn             EXTI0_1_IRQn
 
-/* tamper push-button */
-#define TAMPER_KEY_PIN                   GPIO_PIN_13
-#define TAMPER_KEY_GPIO_PORT             GPIOC
-#define TAMPER_KEY_GPIO_CLK              RCU_GPIOC
-#define TAMPER_KEY_EXTI_LINE             EXTI_13
-#define TAMPER_KEY_EXTI_PORT_SOURCE      EXTI_SOURCE_GPIOC
-#define TAMPER_KEY_EXTI_PIN_SOURCE       EXTI_SOURCE_PIN13
-#define TAMPER_KEY_EXTI_IRQn             EXTI4_15_IRQn
+/* KEY1 push-button */
+#define KEY1_KEY_PIN                   GPIO_PIN_14
+#define KEY1_KEY_GPIO_PORT             GPIOB
+#define KEY1_KEY_GPIO_CLK              RCU_GPIOB
+#define KEY1_KEY_EXTI_LINE             EXTI_13
+#define KEY1_KEY_EXTI_PORT_SOURCE      EXTI_SOURCE_GPIOC
+#define KEY1_KEY_EXTI_PIN_SOURCE       EXTI_SOURCE_PIN13
+#define KEY1_KEY_EXTI_IRQn             EXTI4_15_IRQn
+
+/* KEY2 push-button */
+#define KEY2_KEY_PIN                   GPIO_PIN_15
+#define KEY2_KEY_GPIO_PORT             GPIOB
+#define KEY2_KEY_GPIO_CLK              RCU_GPIOB
+
+/* KEY3 push-button */
+#define KEY3_KEY_PIN                   GPIO_PIN_12
+#define KEY3_KEY_GPIO_PORT             GPIOB
+#define KEY3_KEY_GPIO_CLK              RCU_GPIOB
+
+/* HC-SR501 数据监测 */
+#define HC_SR501_PIN                   GPIO_PIN_1
+#define HC_SR501_GPIO_PORT             GPIOA
+#define HC_SR501_GPIO_CLK              RCU_GPIOA
+#define HC_SR501_EXTI_LINE             EXTI_1
+#define HC_SR501_EXTI_PORT_SOURCE      EXTI_SOURCE_GPIOA
+#define HC_SR501_EXTI_PIN_SOURCE       EXTI_SOURCE_PIN1
+#define HC_SR501_EXTI_IRQn             EXTI0_1_IRQn
 
 /* eval board low layer COM */
 #define COMn                             1U

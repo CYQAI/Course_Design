@@ -36,7 +36,9 @@ OF SUCH DAMAGE.
 
 #include "gd32e23x_it.h"
 #include "main.h"
+#include <stdio.h>
 #include "systick.h"
+#include "gd32e230c_eval.h"
 
 /*!
     \brief      this function handles NMI exception
@@ -91,4 +93,18 @@ void SysTick_Handler(void)
 {
     led_spark();
     delay_decrement();
+}
+
+/*!
+    \brief      this function handles external lines 0 to 1 interrupt request
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void EXTI0_1_IRQHandler(void)
+{
+    if (RESET != exti_interrupt_flag_get(EXTI_1)) {
+        printf("HC_SR501 ok");
+        exti_interrupt_flag_clear(EXTI_1);
+    }
 }

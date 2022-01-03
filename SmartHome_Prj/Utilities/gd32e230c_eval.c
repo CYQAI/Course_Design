@@ -37,15 +37,13 @@ OF SUCH DAMAGE.
 #include "gd32e230c_eval.h"
 
 /* private variables */
-static const uint32_t GPIO_PORT[LEDn]       = {LED1_GPIO_PORT,
-                                               LED2_GPIO_PORT,
-                                               LED3_GPIO_PORT,
-                                               LED4_GPIO_PORT};
+static const uint32_t GPIO_PORT[LEDn]       = {LED0_GPIO_PORT,
+                                               LED1_GPIO_PORT,
+                                               LED2_GPIO_PORT};
 
-static const uint32_t GPIO_PIN[LEDn]        = {LED1_PIN,
-                                               LED2_PIN,
-                                               LED3_PIN,
-                                               LED4_PIN};
+static const uint32_t GPIO_PIN[LEDn]        = {LED0_PIN,
+                                               LED1_PIN,
+                                               LED2_PIN};
 
 static const rcu_periph_enum COM_CLK[COMn]  = {EVAL_COM_CLK};
 
@@ -53,47 +51,67 @@ static const uint32_t COM_TX_PIN[COMn]      = {EVAL_COM_TX_PIN};
 
 static const uint32_t COM_RX_PIN[COMn]      = {EVAL_COM_RX_PIN};
 
-static const rcu_periph_enum GPIO_CLK[LEDn] = {LED1_GPIO_CLK,
-                                               LED2_GPIO_CLK,
-                                               LED3_GPIO_CLK,
-                                               LED4_GPIO_CLK};
+static const rcu_periph_enum GPIO_CLK[LEDn] = {LED0_GPIO_CLK,
+                                               LED1_GPIO_CLK,
+                                               LED2_GPIO_CLK};
 
-static const uint32_t KEY_PORT[KEYn]        = {WAKEUP_KEY_GPIO_PORT, 
-                                               TAMPER_KEY_GPIO_PORT
+static const uint32_t KEY_PORT[KEYn]        = {KEY0_KEY_GPIO_PORT, 
+                                               KEY1_KEY_GPIO_PORT,
+                                               KEY2_KEY_GPIO_PORT,
+                                               KEY3_KEY_GPIO_PORT,
+                                               HC_SR501_GPIO_PORT
                                                };
 
-static const uint32_t KEY_PIN[KEYn]         = {WAKEUP_KEY_PIN, 
-                                               TAMPER_KEY_PIN
+static const uint32_t KEY_PIN[KEYn]         = {KEY0_KEY_PIN, 
+                                               KEY1_KEY_PIN,
+                                               KEY2_KEY_PIN,
+                                               KEY3_KEY_PIN,
+                                               HC_SR501_PIN
                                                };
 
-static const rcu_periph_enum KEY_CLK[KEYn]  = {WAKEUP_KEY_GPIO_CLK, 
-                                               TAMPER_KEY_GPIO_CLK
+static const rcu_periph_enum KEY_CLK[KEYn]  = {KEY0_KEY_GPIO_CLK, 
+                                               KEY1_KEY_GPIO_CLK,
+                                               KEY2_KEY_GPIO_CLK,
+                                               KEY3_KEY_GPIO_CLK,
+                                               HC_SR501_GPIO_CLK
                                                };
 
-static const exti_line_enum KEY_EXTI_LINE[KEYn] = {WAKEUP_KEY_EXTI_LINE,
-                                                   TAMPER_KEY_EXTI_LINE
+/*这里只是简单设置按键为输入模式，采用查询方式，不用外部中断*/
+static const exti_line_enum KEY_EXTI_LINE[KEYn] = {KEY0_KEY_EXTI_LINE,
+                                                   KEY1_KEY_EXTI_LINE,
+                                                   KEY1_KEY_EXTI_LINE,
+                                                   KEY1_KEY_EXTI_LINE,
+                                                   HC_SR501_EXTI_LINE
                                                    };
 
-static const uint8_t KEY_PORT_SOURCE[KEYn]      = {WAKEUP_KEY_EXTI_PORT_SOURCE,
-                                                   TAMPER_KEY_EXTI_PORT_SOURCE
+static const uint8_t KEY_PORT_SOURCE[KEYn]      = {KEY0_KEY_EXTI_PORT_SOURCE,
+                                                   KEY1_KEY_EXTI_PORT_SOURCE,
+                                                   KEY1_KEY_EXTI_PORT_SOURCE,
+                                                   KEY1_KEY_EXTI_PORT_SOURCE,
+                                                   HC_SR501_EXTI_PORT_SOURCE
                                                    };
 
-static const uint8_t KEY_PIN_SOURCE[KEYn]       = {WAKEUP_KEY_EXTI_PIN_SOURCE,
-                                                   TAMPER_KEY_EXTI_PIN_SOURCE
+static const uint8_t KEY_PIN_SOURCE[KEYn]       = {KEY0_KEY_EXTI_PIN_SOURCE,
+                                                   KEY1_KEY_EXTI_PIN_SOURCE,
+                                                   KEY1_KEY_EXTI_PIN_SOURCE,
+                                                   KEY1_KEY_EXTI_PIN_SOURCE,
+                                                   HC_SR501_EXTI_PIN_SOURCE
                                                    };
 
-static const uint8_t KEY_IRQn[KEYn]             = {WAKEUP_KEY_EXTI_IRQn, 
-                                                   TAMPER_KEY_EXTI_IRQn
+static const uint8_t KEY_IRQn[KEYn]             = {KEY0_KEY_EXTI_IRQn, 
+                                                   KEY1_KEY_EXTI_IRQn,
+                                                   KEY1_KEY_EXTI_IRQn,
+                                                   KEY1_KEY_EXTI_IRQn,
+                                                   HC_SR501_EXTI_IRQn
                                                    };
 
 /* eval board low layer private functions */
 /*!
     \brief      configure led GPIO
     \param[in]  lednum: specify the led to be configured
+      \arg        LED0
       \arg        LED1
       \arg        LED2
-      \arg        LED3
-      \arg        LED4
     \param[out] none
     \retval     none
 */
@@ -111,10 +129,9 @@ void gd_eval_led_init(led_typedef_enum lednum)
 /*!
     \brief      turn on selected led
     \param[in]  lednum: specify the led to be turned on
+      \arg        LED0
       \arg        LED1
       \arg        LED2
-      \arg        LED3
-      \arg        LED4
     \param[out] none
     \retval     none
 */
@@ -126,10 +143,9 @@ void gd_eval_led_on(led_typedef_enum lednum)
 /*!
     \brief      turn off selected led
     \param[in]  lednum: specify the led to be turned off
+      \arg        LED0
       \arg        LED1
       \arg        LED2
-      \arg        LED3
-      \arg        LED4
     \param[out] none
     \retval     none
 */
@@ -141,10 +157,9 @@ void gd_eval_led_off(led_typedef_enum lednum)
 /*!
     \brief      toggle selected led
     \param[in]  lednum: specify the led to be toggled
+      \arg        LED0
       \arg        LED1
       \arg        LED2
-      \arg        LED3
-      \arg        LED4
     \param[out] none
     \retval     none
 */
@@ -181,7 +196,7 @@ void gd_eval_key_init(key_typedef_enum keynum, keymode_typedef_enum keymode)
         syscfg_exti_line_config(KEY_PORT_SOURCE[keynum], KEY_PIN_SOURCE[keynum]);
 
         /* configure key EXTI line */
-        exti_init(KEY_EXTI_LINE[keynum], EXTI_INTERRUPT, EXTI_TRIG_FALLING);
+        exti_init(KEY_EXTI_LINE[keynum], EXTI_INTERRUPT, EXTI_TRIG_RISING);
         exti_interrupt_flag_clear(KEY_EXTI_LINE[keynum]);
     }
 }

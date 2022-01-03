@@ -3,6 +3,9 @@
         "main.h": "c",
         "gd32e23x.h": "c",
         "oled.h": "c",
-        "gd32e230c_eval.h": "c"
+        "gd32e230c_eval.h": "c",
+        "dht11.h": "c",
+        "systick.h": "c",
+        "gd32e23x_it.h": "c"
     }
 }
