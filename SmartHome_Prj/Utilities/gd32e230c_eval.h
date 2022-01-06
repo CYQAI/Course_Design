@@ -46,6 +46,11 @@ OF SUCH DAMAGE.
 /*外设驱动*/
 #include "oled.h"
 #include "dht11.h"
+#include "onenet.h"
+#include "esp8266.h"
+//#include "oled_display.h"
+
+#include <stdio.h>
 
 /* exported types */
 typedef enum 
@@ -70,6 +75,11 @@ typedef enum
     KEY_MODE_EXTI = 1
 }keymode_typedef_enum;
 
+typedef enum 
+{
+    COM0 = 0,   /*usart0*/
+    COM1 = 1    /*usart1*/
+}COM_typedef_enum;
 
 /* eval board low layer led */
 #define LEDn                             3U
@@ -127,7 +137,7 @@ typedef enum
 #define HC_SR501_EXTI_IRQn             EXTI0_1_IRQn
 
 /* eval board low layer COM */
-#define COMn                             1U
+#define COMn                             2U
 
 /* definition for COM, connected to USART0 */
 #define EVAL_COM                         USART0
@@ -139,6 +149,17 @@ typedef enum
 #define EVAL_COM_GPIO_PORT               GPIOA
 #define EVAL_COM_GPIO_CLK                RCU_GPIOA
 #define EVAL_COM_AF                      GPIO_AF_1
+
+/* definition for COM, connected to USART1 */
+#define EVAL_COM1                         USART1
+#define EVAL_COM1_CLK                     RCU_USART1
+
+#define EVAL_COM1_TX_PIN                  GPIO_PIN_2
+#define EVAL_COM1_RX_PIN                  GPIO_PIN_3
+
+#define EVAL_COM1_GPIO_PORT               GPIOA
+#define EVAL_COM1_GPIO_CLK                RCU_GPIOA
+#define EVAL_COM1_AF                      GPIO_AF_1
 
 /* function declarations */
 /* configure led GPIO */
@@ -154,7 +175,14 @@ void gd_eval_key_init(key_typedef_enum keynum, keymode_typedef_enum keymode);
 /* return the selected key state */
 uint8_t gd_eval_key_state_get(key_typedef_enum keynum);
 /* configure COM port */
-void gd_eval_com_init(uint32_t com);
+void gd_eval_com_init(COM_typedef_enum COM_ID);
+/*与esp8266沟通的串口*/
+void Usart_SendString(char *str, unsigned short len);
+/*板子的资源初始化*/
+void eval_init(void);
+/*HC-SR501检测*/
+void HC_SR501_check(void);
+
 
 #ifdef __cplusplus
 }

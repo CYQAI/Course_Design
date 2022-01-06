@@ -1,29 +1,32 @@
 #include "dht11.h"
    
-//¸´Î»DHT11
+/*å®šä¹‰æ¸©æ¹¿åº¦ç»“æ„*/
+DHT11 dht11;   
+
+//å¤ä½DHT11
 void DHT11_Rst(void)	   
 {                 
 	DHT11_IO_OUT(); 	//SET OUTPUT
-    DHT11_DQ_OUT_Low; 	//À­µÍDQ
-    delay_1ms(20);    	//À­µÍÖÁÉÙ18ms
+    DHT11_DQ_OUT_Low; 	//æ‹‰ä½DQ
+    delay_1ms(20);    	//æ‹‰ä½è‡³å°‘18ms
     DHT11_DQ_OUT_High; 	//DQ=1 
-	delay_1us(30);     	//Ö÷»úÀ­¸ß20~40us
+	delay_1us(30);     	//ä¸»æœºæ‹‰é«˜20~40us
 }
-//µÈ´ıDHT11µÄ»ØÓ¦
-//·µ»Ø1:Î´¼ì²âµ½DHT11µÄ´æÔÚ
-//·µ»Ø0:´æÔÚ
+//ç­‰å¾…DHT11çš„å›åº”
+//è¿”å›1:æœªæ£€æµ‹åˆ°DHT11çš„å­˜åœ¨
+//è¿”å›0:å­˜åœ¨
 u8 DHT11_Check(void) 	   
 {   
 	u8 retry=0;
 	DHT11_IO_IN();//SET INPUT	 
-    while (DHT11_DQ_IN&&retry<100)//DHT11»áÀ­µÍ40~80us
+    while (DHT11_DQ_IN&&retry<100)//DHT11ä¼šæ‹‰ä½40~80us
 	{
 		retry++;
 		delay_1us(1);
 	};	 
 	if(retry>=100)return 1;
 	else retry=0;
-    while (!DHT11_DQ_IN&&retry<100)//DHT11À­µÍºó»áÔÙ´ÎÀ­¸ß40~80us
+    while (!DHT11_DQ_IN&&retry<100)//DHT11æ‹‰ä½åä¼šå†æ¬¡æ‹‰é«˜40~80us
 	{
 		retry++;
 		delay_1us(1);
@@ -31,28 +34,28 @@ u8 DHT11_Check(void)
 	if(retry>=100)return 1;	    
 	return 0;
 }
-//´ÓDHT11¶ÁÈ¡Ò»¸öÎ»
-//·µ»ØÖµ£º1/0
+//ä»DHT11è¯»å–ä¸€ä¸ªä½
+//è¿”å›å€¼ï¼š1/0
 u8 DHT11_Read_Bit(void) 			 
 {
  	u8 retry=0;
-	while(DHT11_DQ_IN&&retry<100)//µÈ´ı±äÎªµÍµçÆ½
+	while(DHT11_DQ_IN&&retry<100)//ç­‰å¾…å˜ä¸ºä½ç”µå¹³
 	{
 		retry++;
 		delay_1us(1);
 	}
 	retry=0;
-	while(!DHT11_DQ_IN&&retry<100)//µÈ´ı±ä¸ßµçÆ½
+	while(!DHT11_DQ_IN&&retry<100)//ç­‰å¾…å˜é«˜ç”µå¹³
 	{
 		retry++;
 		delay_1us(1);
 	}
-	delay_1us(40);//µÈ´ı40us
+	delay_1us(40);//ç­‰å¾…40us
 	if(DHT11_DQ_IN)return 1;
 	else return 0;		   
 }
-//´ÓDHT11¶ÁÈ¡Ò»¸ö×Ö½Ú
-//·µ»ØÖµ£º¶Áµ½µÄÊı¾İ
+//ä»DHT11è¯»å–ä¸€ä¸ªå­—èŠ‚
+//è¿”å›å€¼ï¼šè¯»åˆ°çš„æ•°æ®
 u8 DHT11_Read_Byte(void)    
 {        
     u8 i,dat;
@@ -64,10 +67,10 @@ u8 DHT11_Read_Byte(void)
     }						    
     return dat;
 }
-//´ÓDHT11¶ÁÈ¡Ò»´ÎÊı¾İ
-//temp:ÎÂ¶ÈÖµ(·¶Î§:0~50¡ã)
-//humi:Êª¶ÈÖµ(·¶Î§:20%~90%)
-//·µ»ØÖµ£º0,Õı³£;1,¶ÁÈ¡Ê§°Ü
+//ä»DHT11è¯»å–ä¸€æ¬¡æ•°æ®
+//temp:æ¸©åº¦å€¼(èŒƒå›´:0~50Â°)
+//humi:æ¹¿åº¦å€¼(èŒƒå›´:20%~90%)
+//è¿”å›å€¼ï¼š0,æ­£å¸¸;1,è¯»å–å¤±è´¥
 u8 DHT11_Read_Data(u8 *temp,u8 *humi)    
 {        
  	u8 buf[5];
@@ -75,7 +78,7 @@ u8 DHT11_Read_Data(u8 *temp,u8 *humi)
 	DHT11_Rst();
 	if(DHT11_Check()==0)
 	{
-		for(i=0;i<5;i++)//¶ÁÈ¡40Î»Êı¾İ
+		for(i=0;i<5;i++)//è¯»å–40ä½æ•°æ®
 		{
 			buf[i]=DHT11_Read_Byte();
 		}
@@ -87,9 +90,9 @@ u8 DHT11_Read_Data(u8 *temp,u8 *humi)
 	}else return 1;
 	return 0;	    
 }
-//³õÊ¼»¯DHT11µÄIO¿Ú DQ Í¬Ê±¼ì²âDHT11µÄ´æÔÚ
-//·µ»Ø1:²»´æÔÚ
-//·µ»Ø0:´æÔÚ    	 
+//åˆå§‹åŒ–DHT11çš„IOå£ DQ åŒæ—¶æ£€æµ‹DHT11çš„å­˜åœ¨
+//è¿”å›1:ä¸å­˜åœ¨
+//è¿”å›0:å­˜åœ¨    	 
 u8 DHT11_Init(void)
 {	 
 
@@ -100,8 +103,8 @@ u8 DHT11_Init(void)
 
 	gpio_bit_set(GPIOA,GPIO_PIN_12);
 		    
-	DHT11_Rst();  //¸´Î»DHT11
-	return DHT11_Check();//µÈ´ıDHT11µÄ»ØÓ¦
+	DHT11_Rst();  //å¤ä½DHT11
+	return DHT11_Check();//ç­‰å¾…DHT11çš„å›åº”
 } 
 
 

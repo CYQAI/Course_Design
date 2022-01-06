@@ -38,6 +38,6 @@ OF SUCH DAMAGE.
 #define MAIN_H
 
 /* led spark function */
-void led_spark(void);
+
 
 #endif /* MAIN_H */

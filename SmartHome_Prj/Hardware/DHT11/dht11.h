@@ -2,52 +2,54 @@
 #define __DHT11_H 
 
 //////////////////////////////////////////////////////////////////////////////////	 
-//±¾³ÌĞòÖ»¹©Ñ§Ï°Ê¹ÓÃ£¬Î´¾­×÷ÕßĞí¿É£¬²»µÃÓÃÓÚÆäËüÈÎºÎÓÃÍ¾
-//ALIENTEKÕ½½¢STM32¿ª·¢°å
-//DHT11Êı×ÖÎÂÊª¶È´«¸ĞÆ÷Çı¶¯´úÂë	   
-//ÕıµãÔ­×Ó@ALIENTEK
-//¼¼ÊõÂÛÌ³:www.openedv.com
-//ĞŞ¸ÄÈÕÆÚ:2012/9/12
-//°æ±¾£ºV1.0
-//°æÈ¨ËùÓĞ£¬µÁ°æ±Ø¾¿¡£
-//Copyright(C) ¹ãÖİÊĞĞÇÒíµç×Ó¿Æ¼¼ÓĞÏŞ¹«Ë¾ 2009-2019
+//æœ¬ç¨‹åºåªä¾›å­¦ä¹ ä½¿ç”¨ï¼Œæœªç»ä½œè€…è®¸å¯ï¼Œä¸å¾—ç”¨äºå…¶å®ƒä»»ä½•ç”¨é€”
+//ALIENTEKæˆ˜èˆ°STM32å¼€å‘æ¿
+//DHT11æ•°å­—æ¸©æ¹¿åº¦ä¼ æ„Ÿå™¨é©±åŠ¨ä»£ç 	   
+//æ­£ç‚¹åŸå­@ALIENTEK
+//æŠ€æœ¯è®ºå›:www.openedv.com
+//ä¿®æ”¹æ—¥æœŸ:2012/9/12
+//ç‰ˆæœ¬ï¼šV1.0
+//ç‰ˆæƒæ‰€æœ‰ï¼Œç›—ç‰ˆå¿…ç©¶ã€‚
+//Copyright(C) å¹¿å·å¸‚æ˜Ÿç¿¼ç”µå­ç§‘æŠ€æœ‰é™å…¬å¸ 2009-2019
 //All rights reserved									  
 //////////////////////////////////////////////////////////////////////////////////
  
-/*ÎªÁË¼æÈİ*/
+/*ä¸ºäº†å…¼å®¹*/
 #include <stdint.h>
 #define u8  uint8_t
 #define u16 uint16_t
 #define u32 uint32_t
 
-/*GD32µÄ¿â*/
+/*GD32çš„åº“*/
 #include "gd32e23x.h"
 #include "systick.h"
 
-/*temperature£¬humidityµÄÁªºÏ½á¹¹Ìå*/
+/*temperatureï¼Œhumidityçš„è”åˆç»“æ„ä½“*/
 typedef struct 
 {
     uint8_t temperature;
     uint8_t humidity;
 }DHT11;
 
+/*dht11ç»“æ„å£°æ˜*/
+extern DHT11 dht11;
 
-//IO·½ÏòÉèÖÃ
+//IOæ–¹å‘è®¾ç½®
 #define DHT11_IO_IN()     gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE,GPIO_PIN_12)  
 #define DHT11_IO_OUT()    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE,GPIO_PIN_12)
 
-////IO²Ù×÷º¯Êı											   
-#define	DHT11_DQ_OUT_Low  gpio_bit_reset(GPIOA,GPIO_PIN_12) //Êı¾İ¶Ë¿Ú	PA12 
-#define	DHT11_DQ_OUT_High gpio_bit_set(GPIOA,GPIO_PIN_12) //Êı¾İ¶Ë¿Ú	PA12 
-#define	DHT11_DQ_IN       gpio_input_bit_get(GPIOA,GPIO_PIN_12)  //Êı¾İ¶Ë¿Ú	PA12 
+////IOæ“ä½œå‡½æ•°											   
+#define	DHT11_DQ_OUT_Low  gpio_bit_reset(GPIOA,GPIO_PIN_12) //æ•°æ®ç«¯å£	PA12 
+#define	DHT11_DQ_OUT_High gpio_bit_set(GPIOA,GPIO_PIN_12) //æ•°æ®ç«¯å£	PA12 
+#define	DHT11_DQ_IN       gpio_input_bit_get(GPIOA,GPIO_PIN_12)  //æ•°æ®ç«¯å£	PA12 
 
 
-u8 DHT11_Init(void);//³õÊ¼»¯DHT11
-u8 DHT11_Read_Data(u8 *temp,u8 *humi);//¶ÁÈ¡ÎÂÊª¶È
-u8 DHT11_Read_Byte(void);//¶Á³öÒ»¸ö×Ö½Ú
-u8 DHT11_Read_Bit(void);//¶Á³öÒ»¸öÎ»
-u8 DHT11_Check(void);//¼ì²âÊÇ·ñ´æÔÚDHT11
-void DHT11_Rst(void);//¸´Î»DHT11    
+u8 DHT11_Init(void);//åˆå§‹åŒ–DHT11
+u8 DHT11_Read_Data(u8 *temp,u8 *humi);//è¯»å–æ¸©æ¹¿åº¦
+u8 DHT11_Read_Byte(void);//è¯»å‡ºä¸€ä¸ªå­—èŠ‚
+u8 DHT11_Read_Bit(void);//è¯»å‡ºä¸€ä¸ªä½
+u8 DHT11_Check(void);//æ£€æµ‹æ˜¯å¦å­˜åœ¨DHT11
+void DHT11_Rst(void);//å¤ä½DHT11    
 
 #endif
 

@@ -36,36 +36,8 @@ OF SUCH DAMAGE.
 
 #include "gd32e23x.h"
 #include "systick.h"
-#include <stdio.h>
 #include "main.h"
 #include "gd32e230c_eval.h"
-
-/*定义温湿度结构*/
-DHT11 dht11;
-
-/*!
-    \brief      toggle the led every 500ms
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void led_spark(void)
-{
-    static __IO uint32_t timingdelaylocal = 0U;
-
-    if(timingdelaylocal){
-
-        if(timingdelaylocal < 500U){
-            gd_eval_led_on(LED1);
-        }else{
-            gd_eval_led_off(LED1);
-        }
-
-        timingdelaylocal--;
-    }else{
-        timingdelaylocal = 1000U;
-    }
-}
 
 /*!
     \brief      main function
@@ -76,43 +48,15 @@ void led_spark(void)
 
 int main(void)
 {
-    /* configure systick */
+	unsigned short timeCount = 0;	//发送间隔变量
+	
+	unsigned char *dataPtr = NULL;
+	/* configure systick */
     systick_config();
-
-    /* initilize the LEDs, USART and key */
-    gd_eval_led_init(LED0);   
-    gd_eval_led_init(LED1); 
-    gd_eval_led_init(LED2); 
-
-    gd_eval_com_init(EVAL_COM);
-
-    gd_eval_key_init(KEY0, KEY_MODE_GPIO);
-    gd_eval_key_init(KEY1, KEY_MODE_GPIO);
-    gd_eval_key_init(KEY2, KEY_MODE_GPIO);
-    gd_eval_key_init(KEY3, KEY_MODE_GPIO);
-
-
-    /*initilize OLED*/
-    OLED_Init();
-	OLED_Clear(); 
-
-    /*initilize DHT11*/
-    while(DHT11_Init())	//DHT11初始化	
-	{
-        printf("DHT11 Error");
- 		delay_1ms(200);
-	}    
-
-    /*initilize HC_SR501接口*/
-    gd_eval_key_init(HC_SR501,KEY_MODE_EXTI);
-    
-    gd_eval_led_on(LED0);
-    gd_eval_led_on(LED1);
-    gd_eval_led_on(LED2);
-
-    OLED_ShowString(0,6,"ASCII:");  
-	OLED_ShowString(63,6,"CODE:");  
-
+	
+	/*板子的资源初始化*/
+    eval_init();
+  		
     /* print out the clock frequency of system, AHB, APB1 and APB2 */
     printf("CK_SYS is %d\r\n", rcu_clock_freq_get(CK_SYS));
     printf("CK_AHB is %d\r\n", rcu_clock_freq_get(CK_AHB));
@@ -131,15 +75,16 @@ int main(void)
         if(SET == gd_eval_key_state_get(KEY2)){
             printf("KEY2 down\r\n");
         }
-         if(SET == gd_eval_key_state_get(KEY3)){
+        if(SET == gd_eval_key_state_get(KEY3)){
             printf("KEY3 down\r\n");
         }
-
-        DHT11_Read_Data(&dht11.temperature,&dht11.humidity);					    
-        printf("temperature=%d  humidity=%d\r\n",dht11.temperature,dht11.humidity);
-    
-        delay_1ms(200);
+				
+				WIFI_Send(500); //发送间隔5s
+				
+			
+				HC_SR501_check();	
     }
+		
 }
 
 /* retarget the C library printf function to the USART */

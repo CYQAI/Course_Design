@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>GD32E230</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Firmware\CMSIS;..\..\Utilities;..\;..\..\Utilities\LCD_Commom;..\..\Firmware\GD32E23x_standard_peripheral\Include;..\..\Firmware\CMSIS\GD\GD32E23x\Include;..\..\Hardware\OLED;..\..\Hardware\DHT11</IncludePath>
+              <IncludePath>..\..\Firmware\CMSIS;..\..\Utilities;..\;..\..\Utilities\LCD_Commom;..\..\Firmware\GD32E23x_standard_peripheral\Include;..\..\Firmware\CMSIS\GD\GD32E23x\Include;..\..\Hardware\OLED;..\..\Hardware\DHT11;..\..\..\..\..\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include;..\..\Hardware\ESP8266;..\..\Hardware\onenet</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -412,6 +412,16 @@
               <FileName>dht11.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Hardware\DHT11\dht11.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Hardware\ESP8266\esp8266.c</FilePath>
+            </File>
+            <File>
+              <FileName>onenet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Hardware\onenet\onenet.c</FilePath>
             </File>
           </Files>
         </Group>

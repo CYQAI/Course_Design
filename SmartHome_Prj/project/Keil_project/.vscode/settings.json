@@ -6,6 +6,9 @@
         "gd32e230c_eval.h": "c",
         "dht11.h": "c",
         "systick.h": "c",
-        "gd32e23x_it.h": "c"
+        "gd32e23x_it.h": "c",
+        "cstddef": "c",
+        "limits": "c",
+        "type_traits": "c"
     }
 }

@@ -40,6 +40,7 @@ OF SUCH DAMAGE.
 #include "systick.h"
 #include "gd32e230c_eval.h"
 
+
 /*!
     \brief      this function handles NMI exception
     \param[in]  none
@@ -91,7 +92,6 @@ void PendSV_Handler(void)
 */
 void SysTick_Handler(void)
 {
-    led_spark();
     delay_decrement();
 }
 
@@ -104,7 +104,10 @@ void SysTick_Handler(void)
 void EXTI0_1_IRQHandler(void)
 {
     if (RESET != exti_interrupt_flag_get(EXTI_1)) {
-        printf("HC_SR501 ok");
+		gd_eval_led_on(LED0);
+        printf("HC_SR501 have people\r\n");		
         exti_interrupt_flag_clear(EXTI_1);
     }
 }
+
+

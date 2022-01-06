@@ -37,6 +37,7 @@ OF SUCH DAMAGE.
 #include "gd32e230c_eval.h"
 
 /* private variables */
+/*LED*/
 static const uint32_t GPIO_PORT[LEDn]       = {LED0_GPIO_PORT,
                                                LED1_GPIO_PORT,
                                                LED2_GPIO_PORT};
@@ -45,16 +46,27 @@ static const uint32_t GPIO_PIN[LEDn]        = {LED0_PIN,
                                                LED1_PIN,
                                                LED2_PIN};
 
-static const rcu_periph_enum COM_CLK[COMn]  = {EVAL_COM_CLK};
-
-static const uint32_t COM_TX_PIN[COMn]      = {EVAL_COM_TX_PIN};
-
-static const uint32_t COM_RX_PIN[COMn]      = {EVAL_COM_RX_PIN};
-
 static const rcu_periph_enum GPIO_CLK[LEDn] = {LED0_GPIO_CLK,
                                                LED1_GPIO_CLK,
                                                LED2_GPIO_CLK};
+/*usart COM*/
+static const uint32_t COM[COMn]      = {EVAL_COM,
+                                        EVAL_COM1
+                                       };
 
+static const rcu_periph_enum COM_CLK[COMn]  = {EVAL_COM_CLK,
+                                               EVAL_COM1_CLK
+                                               };
+
+static const uint32_t COM_TX_PIN[COMn]      = {EVAL_COM_TX_PIN,
+                                               EVAL_COM1_TX_PIN
+                                              };
+
+static const uint32_t COM_RX_PIN[COMn]      = {EVAL_COM_RX_PIN,
+                                               EVAL_COM1_RX_PIN
+                                              };
+
+/*KEY*/
 static const uint32_t KEY_PORT[KEYn]        = {KEY0_KEY_GPIO_PORT, 
                                                KEY1_KEY_GPIO_PORT,
                                                KEY2_KEY_GPIO_PORT,
@@ -221,11 +233,8 @@ uint8_t gd_eval_key_state_get(key_typedef_enum keynum)
     \param[out] none
     \retval     none
 */
-void gd_eval_com_init(uint32_t com)
+void gd_eval_com_init(COM_typedef_enum COM_ID)
 {
-    uint32_t COM_ID;
-    
-    COM_ID = 0U;
 
     /* enable COM GPIO clock */
     rcu_periph_clock_enable(EVAL_COM_GPIO_CLK);
@@ -248,10 +257,91 @@ void gd_eval_com_init(uint32_t com)
     gpio_output_options_set(EVAL_COM_GPIO_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_10MHZ, COM_RX_PIN[COM_ID]);
 
     /* USART configure */
-    usart_deinit(com);
-    usart_baudrate_set(com, 115200U);
-    usart_receive_config(com, USART_RECEIVE_ENABLE);
-    usart_transmit_config(com, USART_TRANSMIT_ENABLE);
+    usart_deinit(COM[COM_ID]);
+    usart_baudrate_set(COM[COM_ID], 115200U);
+    usart_receive_config(COM[COM_ID], USART_RECEIVE_ENABLE);
+    usart_transmit_config(COM[COM_ID], USART_TRANSMIT_ENABLE);
 
-    usart_enable(com);
+    usart_enable(COM[COM_ID]);
 }
+
+/*!
+    \brief      与esp8266沟通的串口
+    \param[in]  str: 字符数组的指针
+    \param[in]  len: 字符数组的大小
+    \param[out] none
+    \retval     none
+*/
+void Usart_SendString(char *str, unsigned short len)
+{
+
+	unsigned short count = 0;
+	
+	for(; count < len; count++)
+	{
+		usart_data_transmit(EVAL_COM1, *str++);									//发送数据
+		while(usart_flag_get(EVAL_COM1, USART_FLAG_TBE) == RESET);		//等待发送完成
+	}
+
+}
+
+/*!
+    \brief      板子的资源初始化
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void eval_init(void)
+{
+	nvic_irq_enable(USART1_IRQn, 0);
+	
+    /* initilize the LEDs, USART and key */
+    gd_eval_led_init(LED0);   
+    gd_eval_led_init(LED1); 
+    gd_eval_led_init(LED2); 
+
+    gd_eval_com_init(COM0);
+    gd_eval_com_init(COM1);
+	
+	usart_interrupt_enable(USART1, USART_INT_RBNE);
+   
+    gd_eval_key_init(KEY0, KEY_MODE_GPIO);
+    gd_eval_key_init(KEY1, KEY_MODE_GPIO);
+    gd_eval_key_init(KEY2, KEY_MODE_GPIO);
+    gd_eval_key_init(KEY3, KEY_MODE_GPIO);
+
+
+    /*initilize OLED*/
+    OLED_Init();
+	OLED_Clear(); 
+		
+	/*initilize ESP8266*/
+	ESP8266_Init();	
+
+    /*initilize DHT11*/
+    while(DHT11_Init())	
+	{
+        printf("DHT11 Error");
+ 		delay_1ms(200);
+	}    
+
+    /*initilize HC_SR501接口*/
+    gd_eval_key_init(HC_SR501,KEY_MODE_EXTI);
+}
+
+/*!
+    \brief      HC-SR501检测
+    \param[in]  none
+    \param[out] none
+    \retval     none
+	\note		HC-SR501检测到有人会点亮LED0（中断那里），
+				这里检测到低电平（无人），灯灭
+				这个放在后面执行，HC-SR501一上电初始化1S
+*/
+void HC_SR501_check(void)
+{
+	if(RESET == gd_eval_key_state_get(HC_SR501)){
+		gd_eval_led_off(LED0);
+	}
+}
+
