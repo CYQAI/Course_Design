@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>GD32E230</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Firmware\CMSIS;..\..\Utilities;..\;..\..\Utilities\LCD_Commom;..\..\Firmware\GD32E23x_standard_peripheral\Include;..\..\Firmware\CMSIS\GD\GD32E23x\Include;..\..\Hardware\OLED;..\..\Hardware\DHT11;..\..\..\..\..\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include;..\..\Hardware\ESP8266;..\..\Hardware\onenet</IncludePath>
+              <IncludePath>..\..\Firmware\CMSIS;..\..\Utilities;..\;..\..\Utilities\LCD_Commom;..\..\Firmware\GD32E23x_standard_peripheral\Include;..\..\Firmware\CMSIS\GD\GD32E23x\Include;..\..\Hardware\OLED;..\..\Hardware\DHT11;..\..\..\..\..\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include;..\..\Hardware\ESP8266;..\..\Hardware\onenet;..\..\Hardware\OLED_display;..\..\Hardware\KEY</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -422,6 +422,16 @@
               <FileName>onenet.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Hardware\onenet\onenet.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Hardware\OLED_display\oled_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Hardware\KEY\key.c</FilePath>
             </File>
           </Files>
         </Group>

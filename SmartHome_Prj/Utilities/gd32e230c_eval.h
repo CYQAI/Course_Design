@@ -48,7 +48,8 @@ OF SUCH DAMAGE.
 #include "dht11.h"
 #include "onenet.h"
 #include "esp8266.h"
-//#include "oled_display.h"
+#include "oled_display.h"
+#include "key.h"
 
 #include <stdio.h>
 

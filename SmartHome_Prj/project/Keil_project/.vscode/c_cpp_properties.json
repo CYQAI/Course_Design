@@ -14,6 +14,8 @@
                 "c:\\Users\\CYQ\\AppData\\Local\\Arm\\Packs\\ARM\\CMSIS\\5.7.0\\CMSIS\\Core\\Include",
                 "c:\\Users\\CYQ\\Desktop\\SmartHome_Prj\\SmartHome_Prj\\Hardware\\ESP8266",
                 "c:\\Users\\CYQ\\Desktop\\SmartHome_Prj\\SmartHome_Prj\\Hardware\\onenet",
+                "c:\\Users\\CYQ\\Desktop\\SmartHome_Prj\\SmartHome_Prj\\Hardware\\OLED_display",
+                "c:\\Users\\CYQ\\Desktop\\SmartHome_Prj\\SmartHome_Prj\\Hardware\\KEY",
                 "C:\\MDK5_31\\ARM\\ARMCLANG\\include",
                 "C:\\MDK5_31\\ARM\\ARMCLANG\\include\\arm_linux",
                 "C:\\MDK5_31\\ARM\\ARMCLANG\\include\\arm_linux_compat",

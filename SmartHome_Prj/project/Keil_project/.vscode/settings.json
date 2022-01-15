@@ -9,6 +9,8 @@
         "gd32e23x_it.h": "c",
         "cstddef": "c",
         "limits": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "oled_display.h": "c",
+        "key.h": "c"
     }
 }

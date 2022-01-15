@@ -51,38 +51,28 @@ int main(void)
 	unsigned short timeCount = 0;	//发送间隔变量
 	
 	unsigned char *dataPtr = NULL;
+	
+	uint8_t PageNum=0; 
+	
 	/* configure systick */
     systick_config();
 	
 	/*板子的资源初始化*/
     eval_init();
-  		
-    /* print out the clock frequency of system, AHB, APB1 and APB2 */
-    printf("CK_SYS is %d\r\n", rcu_clock_freq_get(CK_SYS));
-    printf("CK_AHB is %d\r\n", rcu_clock_freq_get(CK_AHB));
-    printf("CK_APB1 is %d\r\n", rcu_clock_freq_get(CK_APB1));
 
-
+    display_page_1();
+ 
     while (1)
     {
-        /*测试按键是否正常*/
-        if(SET == gd_eval_key_state_get(KEY0)){
-            printf("KEY0 down\r\n");
-        }
-        if(SET == gd_eval_key_state_get(KEY1)){
-            printf("KEY1 down\r\n");
-        }
-        if(SET == gd_eval_key_state_get(KEY2)){
-            printf("KEY2 down\r\n");
-        }
-        if(SET == gd_eval_key_state_get(KEY3)){
-            printf("KEY3 down\r\n");
-        }
-				
-				WIFI_Send(500); //发送间隔5s
-				
+
+        key_ctrl_picture();
+		DHT11_Read_Data(&dht11.temperature,&dht11.humidity);
+		
+        WIFI_Send(100); //发送间隔5s
 			
-				HC_SR501_check();	
+		HC_SR501_check();	
+			
+		LED_warning();
     }
 		
 }

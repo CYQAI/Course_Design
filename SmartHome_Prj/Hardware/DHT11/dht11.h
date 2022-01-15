@@ -31,8 +31,15 @@ typedef struct
     uint8_t humidity;
 }DHT11;
 
+typedef struct 
+{
+    uint32_t temperature;
+    uint32_t humidity;
+}DHT11_warning;
+
 /*dht11结构声明*/
 extern DHT11 dht11;
+extern DHT11_warning dht11_warning;
 
 //IO方向设置
 #define DHT11_IO_IN()     gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE,GPIO_PIN_12)  

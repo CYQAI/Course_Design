@@ -242,7 +242,7 @@ void ESP8266_Init(void)
 void WIFI_Send(unsigned short time)
 {
 			unsigned char *dataPtr = NULL;
-			DHT11_Read_Data(&dht11.temperature,&dht11.humidity);
+			
 			if(++timeCount >= time)		
 				{
 										    
@@ -260,7 +260,7 @@ void WIFI_Send(unsigned short time)
 				OneNet_RevPro(dataPtr);
 		
 				delay_1ms(10);
-		}
+}
 
 void USART1_IRQHandler(void)
 {

@@ -2,6 +2,7 @@
    
 /*定义温湿度结构*/
 DHT11 dht11;   
+DHT11_warning dht11_warning;
 
 //复位DHT11
 void DHT11_Rst(void)	   
@@ -95,7 +96,9 @@ u8 DHT11_Read_Data(u8 *temp,u8 *humi)
 //返回0:存在    	 
 u8 DHT11_Init(void)
 {	 
-
+	dht11_warning.humidity = 60;
+	dht11_warning.temperature = 30;
+		
     rcu_periph_clock_enable(RCU_GPIOA);
     /* configure led GPIO port */ 
     gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE,GPIO_PIN_12);
